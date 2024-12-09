@@ -1,190 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diabetes and Physical Activity</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            padding: 20px;
-        }
-
-        .welcome {
-            background-color: #e8f5e9;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px auto;
-            max-width: 800px;
-            text-align: left;
-            line-height: 1.6;
-        }
-
-        .welcome h1 {
-            color: #2e7d32;
-        }
-
-        h1 {
-            margin-top: 30px;
-        }
-
-        .slider-container {
-            margin-top: 30px;
-        }
-
-        #slider {
-            width: 80%;
-            max-width: 600px;
-            margin: 20px auto;
-        }
-
-        .circle-container {
-            margin-top: 50px;
-        }
-
-        svg {
-            display: block;
-            margin: 0 auto;
-        }
-
-        .results {
-            margin-top: 30px;
-            font-size: 1.2em;
-        }
-
-        .results p {
-            margin: 10px 0;
-        }
-
-        #circle-text {
-            font-weight: bold;
-        }
-
-        .margin-arcs circle {
-            stroke-width: 10;
-        }
-
-        .main-arc {
-            stroke: blue;
-        }
-
-        .lower-bound {
-            stroke: lightblue;
-        }
-
-        .upper-bound {
-            stroke: lightcoral;
-        }
-    </style>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.2">
+  <style type="text/css">
+    body {background-color: #ececec}
+    p.p2 {margin: 0.0px 0.0px 10.0px 0.0px; text-align: center; font: 18.0px Arial; color: #262626; -webkit-text-stroke: #262626}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 12.0px Arial; -webkit-text-stroke: #000000}
+    span.s1 {font-kerning: none; background-color: #ffffff}
+  </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Welcome Section -->
-        <div class="welcome">
-            <h1>Welcome to "Diabetes and Physical Activity: What’s the Connection?"</h1>
-            <p>
-                This website is designed to help you explore how physical activity impacts diabetes rates in your community. 
-                By simply adjusting a slider to represent the percentage of inactive people in your area, 
-                you’ll see a prediction of how inactivity might influence diabetes prevalence.
-            </p>
-            <p>
-                Our goal is to provide clear, easy-to-understand insights, supported by real data, to empower individuals, 
-                community leaders, and policymakers to take action. Whether you’re aiming to improve your health, educate 
-                your community, or shape policies, this tool makes the connection easy to see.
-            </p>
-            <p>
-                Try the slider now and discover how small changes in activity can make a big difference!
-            </p>
-        </div>
-
-        <!-- Slider Section -->
-        <div class="slider-container">
-            <label for="slider">Percentage of Inactive People:</label>
-            <input type="range" id="slider" min="0" max="100" step="1" value="50">
-            <span id="slider-value">50</span>
-        </div>
-
-        <!-- Pie Chart (Circle) -->
-        <div class="circle-container">
-            <svg width="120" height="120">
-                <circle cx="60" cy="60" r="50" stroke="lightgray" stroke-width="10" fill="none" />
-                <circle id="circle" cx="60" cy="60" r="50" stroke="blue" stroke-width="10" fill="none" stroke-dasharray="0" stroke-dashoffset="0" transform="rotate(-90 60 60)" />
-                <text id="circle-text" x="50%" y="50%" text-anchor="middle" fill="black" font-size="20" dy=".3em">50</text>
-            </svg>
-        </div>
-
-        <!-- Results Display -->
-        <div class="results">
-            <h2>Predicted</h2>
-            <p><strong>County's Diabetes Prevalence:</strong> <span id="y-value"></span>%</p>
-            <p><strong>95% Confidence Interval between:</strong> <span id="y1-value"></span>% and <span id="y2-value"></span>%</p>
-        </div>
-    </div>
-
-    <script>
-        // DOM Elements
-        const slider = document.getElementById('slider');
-        const sliderValue = document.getElementById('slider-value');
-        const yValue = document.getElementById('y-value');
-        const y1Value = document.getElementById('y1-value');
-        const y2Value = document.getElementById('y2-value');
-        const circle = document.getElementById('circle'); // SVG Circle Element
-        const circleText = document.getElementById('circle-text'); // Text inside the circle
-
-        // Formulas
-        function calculateY(X) {
-            return (0.299 * X + 1.921).toFixed(2); // Main formula for diabetes prevalence
-        }
-
-        function calculateY1(X) {
-            return (0.270 * X + 1.120).toFixed(2); // Lower bound for confidence interval
-        }
-
-        function calculateY2(X) {
-            return (0.327 * X + 2.721).toFixed(2); // Upper bound for confidence interval
-        }
-
-        // Function to update the circle (pie chart) based on Y
-        function updateCircle(Y) {
-            const maxValue = 100; // Set max value for Y (assuming percentages)
-            const percentage = (Y / maxValue) * 100; // Calculate percentage for the circle
-            const circumference = 2 * Math.PI * 50; // Circumference of the circle (50 is the radius)
-            const offset = circumference - (percentage / 100) * circumference; // Calculate the stroke offset
-
-            circle.style.strokeDasharray = `${circumference}`; // Set the full circumference
-            circle.style.strokeDashoffset = offset; // Set the stroke offset to represent percentage
-
-            circleText.textContent = `${Y}`; // Display the Y value inside the circle
-        }
-
-        // Function to calculate and update results
-        function updateResults() {
-            const X = parseFloat(slider.value); // Slider value
-            sliderValue.textContent = X; // Display slider value
-
-            // Calculate and update results
-            const Y = parseFloat(calculateY(X));
-            yValue.textContent = Y;
-            y1Value.textContent = calculateY1(X);
-            y2Value.textContent = calculateY2(X);
-
-            // Update circle (pie chart)
-            updateCircle(Y);
-        }
-
-        // Event Listener
-        slider.addEventListener('input', updateResults);
-
-        // Initial Calculation
-        updateResults();
-    </script>
+<h1 style="margin: 0.0px 0.0px 20.0px 0.0px; text-align: center; font: 24.0px Arial; color: #434343; -webkit-text-stroke: #434343"><span class="s1"><b>Interactive Slider</b><b></b></span></h1>
+<p class="p2"><span class="s1">Adjust the slider to find out the predicted value:</span></p>
+<p class="p3"><span class="s1">Input Value (X):</span></p>
+<p class="p2"><span class="s1">Slider Value (X): 50</span></p>
+<p class="p2"><span class="s1">Calculated Result (Y): 66.8</span></p>
 </body>
 </html>
