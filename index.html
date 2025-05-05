@@ -3,40 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>County Diabetes Prevalence Estimator</title>
+    <title>Diabetes Estimator & Tableau Insights</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
-            text-align: center;
             margin: 0;
             padding: 0;
         }
 
-        .container {
-            padding: 20px;
-        }
-
-        .welcome {
-            background-color: #e8f5e9;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px auto;
-            max-width: 800px;
-            text-align: left;
-            line-height: 1.6;
-        }
-
         h1 {
             color: #2e7d32;
+            text-align: center;
+            margin-top: 20px;
         }
 
-        .slider-container {
-            margin-top: 30px;
-            text-align: left;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+        section {
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+            margin-bottom: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .slider-label {
@@ -48,7 +37,8 @@
         }
 
         .circle-container {
-            margin-top: 50px;
+            margin-top: 30px;
+            text-align: center;
         }
 
         svg {
@@ -57,25 +47,74 @@
         }
 
         .results {
-            margin-top: 30px;
+            margin-top: 20px;
             font-size: 1.2em;
+            text-align: center;
         }
 
         #circle-text {
             font-weight: bold;
         }
+
+        .slider-container {
+            max-width: 600px;
+            margin: auto;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="welcome">
-            <h1>County Diabetes Prevalence Estimator</h1>
-            <p>Adjust the sliders to see how obesity, smoking, and uninsured population influence diabetes prevalence at a county level.</p>
-        </div>
 
+    <h1>Community Diabetes Risk & Tableau Insights</h1>
+
+    <!-- SECTION 1: Tableau Visualization -->
+    <section>
+        <h2 style="text-align:center;">Tableau Dashboard</h2>
+        <div class='tableauPlaceholder' id='viz1746454150929' style='position: relative'>
+            <noscript>
+                <a href='#'>
+                    <img alt='Dashboard 1 ' src='https://public.tableau.com/static/images/FP/FPWXFPSRB/1_rss.png' style='border: none' />
+                </a>
+            </noscript>
+            <object class='tableauViz' style='display:none;'>
+                <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> 
+                <param name='embed_code_version' value='3' /> 
+                <param name='path' value='shared/FPWXFPSRB' /> 
+                <param name='toolbar' value='yes' />
+                <param name='static_image' value='https://public.tableau.com/static/images/FP/FPWXFPSRB/1.png' /> 
+                <param name='animate_transition' value='yes' />
+                <param name='display_static_image' value='yes' />
+                <param name='display_spinner' value='yes' />
+                <param name='display_overlay' value='yes' />
+                <param name='display_count' value='yes' />
+                <param name='language' value='en-US' />
+                <param name='filter' value='publish=yes' />
+            </object>
+        </div>                
+        <script type='text/javascript'>                    
+            var divElement = document.getElementById('viz1746454150929');                    
+            var vizElement = divElement.getElementsByTagName('object')[0];                    
+            if ( divElement.offsetWidth > 800 ) { 
+                vizElement.style.width='1000px';
+                vizElement.style.height='827px';
+            } else if ( divElement.offsetWidth > 500 ) { 
+                vizElement.style.width='100%';
+                vizElement.style.height='827px';
+            } else { 
+                vizElement.style.width='100%';
+                vizElement.style.height='727px';
+            }                     
+            var scriptElement = document.createElement('script');                    
+            scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    
+            vizElement.parentNode.insertBefore(scriptElement, vizElement);                
+        </script>
+    </section>
+
+    <!-- SECTION 2: Diabetes Estimator -->
+    <section>
+        <h2 style="text-align:center;">Diabetes Risk Estimator</h2>
         <div class="slider-container">
             <div>
-                <label class="slider-label">Obesity Proportion (%): <span id="value1">30</span></label>
+                <label class="slider-label">Obesity Rate (%): <span id="value1">30</span></label>
                 <input type="range" id="slider1" min="0" max="100" value="30">
             </div>
             <div>
@@ -91,18 +130,20 @@
         <div class="circle-container">
             <svg width="120" height="120">
                 <circle cx="60" cy="60" r="50" stroke="lightgray" stroke-width="10" fill="none" />
-                <circle id="circle" cx="60" cy="60" r="50" stroke="blue" stroke-width="10" fill="none" stroke-dasharray="0" stroke-dashoffset="0" transform="rotate(-90 60 60)" />
-                <text id="circle-text" x="50%" y="50%" text-anchor="middle" fill="black" font-size="20" dy=".3em">0</text>
+                <circle id="circle" cx="60" cy="60" r="50" stroke="blue" stroke-width="10" fill="none"
+                    stroke-dasharray="0" stroke-dashoffset="0" transform="rotate(-90 60 60)" />
+                <text id="circle-text" x="50%" y="50%" text-anchor="middle" fill="black" font-size="20"
+                    dy=".3em">0</text>
             </svg>
         </div>
 
         <div class="results">
-            <h2>Predicted Diabetes Prevalence: <span id="y-value">0</span>%</h2>
+            <h3>Predicted Diabetes Prevalence: <span id="y-value">0</span>%</h3>
         </div>
-    </div>
+    </section>
 
     <script>
-        // Get DOM Elements
+        // Slider Elements
         const sliders = [
             document.getElementById('slider1'), // Obesity
             document.getElementById('slider2'), // Smoking
@@ -119,12 +160,12 @@
         const circle = document.getElementById('circle');
         const circleText = document.getElementById('circle-text');
 
-        // Coefficients from Model 4 (no alcohol, uninsured scaled in thousands)
+        // Coefficients from Model 4
         const intercept = 8.763;
         const coefficients = [
             0.045,      // Obesity
             0.208,      // Smoking
-            0.0000273   // Uninsured count (thousands)
+            0.0000273   // Uninsured count (thousands scaled back to count)
         ];
 
         function calculateY(inputs) {
@@ -157,5 +198,6 @@
         // Initial calculation
         updateResults();
     </script>
+
 </body>
 </html>
